@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.adminer.name }}-service
+spec:
+  selector:
+    app: {{ .Values.adminer.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.adminer.service.port }}
+      targetPort: {{ .Values.adminer.service.targetPort }}
+      nodePort: {{ .Values.adminer.service.nodePort }}
+  type: {{ .Values.adminer.service.type }}

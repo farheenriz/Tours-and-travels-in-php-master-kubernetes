@@ -1,0 +1,79 @@
+# Default values for tms-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Application configuration
+app:
+  name: php-app
+  replicaCount: 2
+  image:
+    repository: rizvifarheen133688/tours-and-travels-in-php-master-web
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: NodePort
+    port: 8081
+    targetPort: 80
+    nodePort: 30081
+  persistence:
+    storageClass: hostpath
+    size: 1Gi
+    mountPath: /var/www/html/storage
+
+# Database configuration
+database:
+  name: db
+  image:
+    repository: rizvifarheen133688/tours-and-travels-in-php-master-db
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    port: 3306
+  persistence:
+    storageClass: hostpath
+    size: 1Gi
+
+# Adminer service configuration
+adminer:
+  name: adminer
+  replicaCount: 1
+  image:
+    repository: rizvifarheen133688/adminer
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: NodePort
+    port: 8080
+    targetPort: 8080
+    nodePort: 30080
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  hosts:
+    - host: ""
+      paths:
+        - path: /
+          pathType: Prefix
+          serviceName: php-app-service
+          servicePort: 8081
+        - path: /adminer
+          pathType: Prefix
+          serviceName: adminer-service
+          servicePort: 8080
+
+# ConfigMap data
+configMap:
+  name: app-config
+  phpVersion: "5.6"
+  adminUser: "admin"
+  dbName: "tms"
+
+# Update the secret section
+secret:
+  dbUser: tmsuser
+  dbPassword: tmspassword
+  mysqlRootPassword: rootpassword

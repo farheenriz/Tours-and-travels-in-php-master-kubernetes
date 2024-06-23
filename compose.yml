@@ -1,0 +1,27 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=tmsuser
+      - DB_PASSWORD=tmspassword
+      - DB_NAME=tms
+
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile-db
+    ports:
+      - "3306:3306"
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"

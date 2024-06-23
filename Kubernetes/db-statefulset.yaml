@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db
+spec:
+  serviceName: "db"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: db
+        image: rizvifarheen133688/tours-and-travels-in-php-master-db:latest  # image for db
+        ports:
+        - containerPort: 3306
+        envFrom:
+        - configMapRef:
+            name: app-config
+        - secretRef:
+            name: db-secrets
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "hostpath"
+      resources:
+        requests:
+          storage: 1Gi
