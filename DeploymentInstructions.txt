@@ -1,0 +1,62 @@
+Deploying app on docker:
+
+docker-compose up --build
+
+Access Application:
+PHP App: http://localhost:8081
+Adminer: http://localhost:8080
+
+Deploying app on Kubernetes:
+
+kubectl apply -f adminer-deployment.yaml
+kubectl apply -f adminer-service.yaml
+kubectl apply -f app-deployment.yaml
+kubectl apply -f app-pv.yaml
+kubectl apply -f app-pvc.yaml
+kubectl apply -f app-service.yaml
+kubectl apply -f configmap.yaml
+kubectl apply -f db-pv.yaml
+kubectl apply -f db-pvc.yaml
+kubectl apply -f db-service.yaml
+kubectl apply -f db-statefulset.yaml
+kubectl apply -f secret.yaml
+
+Access Application:
+PHP app: http://localhost:30081
+Adminer: http://localhost:30080
+
+Deploying Ingress:
+
+Ingress file: kubectl apply -f ingress.yaml
+Ingress Controller: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml  (for DockerDesktop)
+
+Access Application:
+PHP App: http://localhost/
+Adminer: http://localhost/adminer
+
+Creating Helm Chart and Deploy App:
+helm create tms-chart
+cd tms-chart
+helm install my-release ./
+
+## uninstall release ##
+helm list
+helm uninstall <release-name> -n <namespace>
+
+Access Application:
+PHP App: http://localhost/
+Adminer: http://localhost/adminer
+
+
+
+
+
+
+
+docker run -d --name nfs-server \
+  --privileged \
+  -v ./:/exports \
+  -p 2049:2049 \
+  -p 111:111 \
+  nfs-server
+
