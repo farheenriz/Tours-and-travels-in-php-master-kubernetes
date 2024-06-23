@@ -54,7 +54,7 @@ ingress:
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
   hosts:
-    - host: ""
+    - host: "localhost"
       paths:
         - path: /
           pathType: Prefix

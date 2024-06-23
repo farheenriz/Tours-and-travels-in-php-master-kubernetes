@@ -32,4 +32,4 @@ spec:
       volumes:
       - name: php-storage
         persistentVolumeClaim:
-          claimName: php-app-pvc
+          claimName: php-app-pvc-tms
